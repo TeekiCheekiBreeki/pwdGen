@@ -1,11 +1,21 @@
 import random
 import string
-#implementing this later
+import PySimpleGUI as sg
+
+layout = [[sg.Text("Welcome to Password Generator")], [sg.Button("Exit")], [sg.Button("Password List")],[sg.Button("New Password")]]
+window = sg.Window("Password Generator", layout)
+while True:
+    event, values = window.read()
+    
+    if event == "Exit" or event == sg.WIN_CLOSED:
+        break
+window.close()
 
 print("For which account you want your password: ")
 
 account = input();
-
+with open(r'C:\Users\teeki\Documents\Passwords\passwords.txt') as file:
+    content = file.readlines
 
 length = int(input('\nHow long do you want your password to be: '))
 
