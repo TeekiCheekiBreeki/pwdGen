@@ -2,14 +2,7 @@ import random
 import string
 import PySimpleGUI as sg
 filename = r'C:\Users\teeki\Documents\Passwords\passwords.txt'
-
-def new_password():
-    print("For which account you want your password: ")
-
-    account = input();
-
-    length = int(input('\nHow long do you want your password to be: '))
-
+def generate_password(account, length):
     lower = string.ascii_lowercase
     upper = string.ascii_uppercase
     num = string.digits
@@ -20,14 +13,33 @@ def new_password():
     temp = random.sample(all_symbols,length)
     password = "".join(temp)
 
+    return password
 
-    # We save password to the passwords.txt
-    text_file = open(r'C:\Users\teeki\Documents\Passwords\passwords.txt' , 'a')
-    n = text_file.write('\n' + account + ' password: ' + password)
-    text_file.close()
+def new_password():
+    
 
-    print("Your password is: ", password)
-
+    layout = [
+        [sg.Text("Password Account"), sg.Input(key='account')],
+        [sg.Text("Password Length "), sg.Input(key='length' )],
+        [sg.Button("Generate"), sg.Text("", size=(0, 1), key='password')],
+    ]
+    window = sg.Window('New Password', layout, modal=True)
+    while True:
+        event, values = window.read()
+        if event == sg.WIN_CLOSED:
+            break
+        elif event == "Generate":
+            account = values['account']
+            length = int(values['length'])
+            password = generate_password(account, length)
+            text_file = open(r'C:\Users\teeki\Documents\Passwords\passwords.txt' , 'a')
+            n = text_file.write('\n' + account + ' password: ' + password)
+            text_file.close()
+            if password:
+                window['password'].update(value=password)
+            else:
+                window['password'].update(value='')
+    window.close()
 
 def popup_text(filename, text):
 
